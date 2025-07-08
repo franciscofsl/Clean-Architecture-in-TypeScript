@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
+    "build": "tsc",
     "start": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "keywords": [],
