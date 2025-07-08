@@ -1,0 +1,57 @@
+{
+	"info": {
+		"_postman_id": "c6b2db91-fb9f-41c8-ad1b-8276dfd14a95",
+		"name": "Typescript Clean Architecture",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44214907"
+	},
+	"item": [
+		{
+			"name": "Get All Pirates",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pirates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pirates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Pirate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Luffy\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/pirates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pirates"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
