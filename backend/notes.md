@@ -122,3 +122,77 @@ Now you can run tests with:
 - `npm test`: Run all tests once
 - `npm run test:watch`: Run tests in watch mode
 
+## 4. Writing Tests with Mocks
+
+This section explains how to write unit tests using mocks for dependencies, which is essential for testing use cases in Clean Architecture.
+
+### 4.1. Understanding Mocks
+
+Mocks are fake implementations of dependencies that allow you to:
+- Test your code in isolation
+- Control the behavior of dependencies
+- Verify that your code calls dependencies correctly
+- Avoid side effects (like database operations) during testing
+
+### 4.2. Basic Mock Structure
+
+Here's a simple example of how to create tests with mocks for a use case:
+
+```typescript
+import { YourUseCase } from '../../../src/application/YourUseCase';
+import { IYourRepository } from '../../../src/domain/IYourRepository';
+
+describe('YourUseCase', () => {
+  let useCase: YourUseCase;
+  let mockRepository: jest.Mocked<IYourRepository>;
+
+  beforeEach(() => {
+    // Create mock of the repository
+    mockRepository = {
+      save: jest.fn(),
+      getAll: jest.fn(),
+      // Add all methods from your interface
+    };
+
+    // Create use case instance with the mock
+    useCase = new YourUseCase(mockRepository);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should do something when called', async () => {
+    // Arrange - Set up test data and mock behavior
+    const testData = 'test value';
+    mockRepository.save.mockResolvedValue();
+
+    // Act - Execute the code being tested
+    await useCase.execute(testData);
+
+    // Assert - Verify the results
+    expect(mockRepository.save).toHaveBeenCalledTimes(1);
+    expect(mockRepository.save).toHaveBeenCalledWith(
+      expect.objectContaining({ /* expected properties */ })
+    );
+  });
+});
+```
+
+### 4.3. Key Mock Methods
+
+- `jest.fn()`: Creates a mock function
+- `mockFunction.mockResolvedValue(value)`: Makes the mock return a resolved promise with the given value
+- `mockFunction.mockRejectedValue(error)`: Makes the mock return a rejected promise with the given error
+- `expect(mockFunction).toHaveBeenCalledTimes(n)`: Verifies the mock was called n times
+- `expect(mockFunction).toHaveBeenCalledWith(args)`: Verifies the mock was called with specific arguments
+
+### 4.4. Test Structure (AAA Pattern)
+
+Always structure your tests using the AAA pattern:
+1. **Arrange**: Set up test data and configure mocks
+2. **Act**: Execute the code being tested
+3. **Assert**: Verify the expected behavior occurred
+
+This approach ensures your tests are clear, maintainable, and reliable.
+
