@@ -45,3 +45,80 @@ Edit the `tsconfig.json` file with the following configuration:
 - `esModuleInterop: true`: Enables interoperability between CommonJS and ES modules
 - `strict: true`: Enables all strict type checking options
 - `skipLibCheck: true`: Skips type checking of declaration files for faster compilation
+
+## 3. Testing Setup
+
+Configure testing environment for the project by following these steps:
+
+### 3.1. Install Testing Dependencies
+
+Run the following commands in the backend root directory:
+
+```bash
+npm install -D jest ts-jest @types/jest
+npx ts-jest config:init
+npm install -D @vitest/expect @vitest/ui
+```
+
+**Explanation of each command:**
+- `npm install -D jest ts-jest @types/jest`: Installs Jest testing framework, TypeScript integration for Jest, and Jest type definitions
+- `npx ts-jest config:init`: Initializes Jest configuration for TypeScript projects (creates jest.config.js)
+- `npm install -D @vitest/expect @vitest/ui`: Installs Vitest expect utilities and UI for enhanced testing experience
+
+### 3.2. Configure Jest for Tests Directory
+
+Update the `jest.config.js` file to specify where Jest should look for test files:
+
+```javascript
+const { createDefaultPreset } = require("ts-jest");
+
+const tsJestTransformCfg = createDefaultPreset().transform;
+
+/** @type {import("jest").Config} **/
+module.exports = {
+  testEnvironment: "node",
+  testMatch: [
+    "**/tests/**/*.test.ts",
+    "**/tests/**/*.spec.ts"
+  ],
+  transform: {
+    ...tsJestTransformCfg,
+  },
+};
+```
+
+### 3.3. Update Package.json Scripts
+
+Add the following test scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  }
+}
+```
+
+**Script explanation:**
+- `"test": "jest"`: Runs all tests once
+- `"test:watch": "jest --watch"`: Runs tests in watch mode (re-runs tests when files change)
+
+### 3.4. Directory Structure for Tests
+
+Create your test files in a `tests` directory that mirrors your `src` structure:
+
+```
+tests/
+  domain/
+    YourEntity.test.ts
+  application/
+    YourUseCase.test.ts
+  infrastructure/
+    YourRepository.test.ts
+```
+
+Now you can run tests with:
+- `npm test`: Run all tests once
+- `npm run test:watch`: Run tests in watch mode
+
