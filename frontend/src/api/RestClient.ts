@@ -18,7 +18,7 @@ export class RestClient {
   private timeout: number;
 
   constructor(defaultHeaders: Record<string, string> = {}) {
-    this.baseURL = appConfig.apiBaseUrl.replace(/\/$/, ''); // Remove trailing slash
+    this.baseURL = appConfig.apiBaseUrl; 
     this.defaultHeaders = {
       'Content-Type': 'application/json',
       ...defaultHeaders,
