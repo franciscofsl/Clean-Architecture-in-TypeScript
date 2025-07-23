@@ -2,6 +2,7 @@ import useGetPirates from "../hooks/useGetPirates";
 import type { PirateForListDto } from "../pirates.types";
 
 import React, { useEffect, useState } from "react";
+import CreatePirate from "./CreatePirate";
 const PirateList = () => {
   const { getPirates, loadingState } = useGetPirates();
   const [pirates, setPirates] = useState<PirateForListDto[]>([]);
@@ -9,16 +10,19 @@ const PirateList = () => {
   useEffect(() => {
     const fetchPirates = async () => {
       const response = await getPirates();
+      console.log(response);
       if (response && response.data) {
         setPirates(response.data);
       }
     };
     fetchPirates();
-  }, [getPirates]);
+  }, []);
 
   return (
     <div>
       <h1>Pirate List</h1>
+      <CreatePirate />
+    
       <table>
         <thead>
           <tr>

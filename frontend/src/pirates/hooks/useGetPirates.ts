@@ -10,6 +10,7 @@ const useGetPirates = () => {
         setLoadingState(loadingStatus.isLoading);
         try {
             const pirates = await apiClient.get<PirateForListDto[]>("pirates");
+           
             setLoadingState(loadingStatus.loaded);
             return pirates;
         } catch {
