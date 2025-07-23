@@ -1,22 +1,32 @@
+import { useState } from "react";
 import useCreatePirate from "../hooks/useCreatePirate";
+import type { CreatePirateDto } from "../pirates.types";
 
 const CreatePirate = () => {
   const { createPirate, isLoading, error } = useCreatePirate();
-  
-  const handleCreatePirate = async () => {
-    const dto = {
-      name: "New Pirate",
-      // Add other pirate properties here
-    };
-    await createPirate(dto);
+
+  const emptyPirate: CreatePirateDto = {
+    name: "",
   };
 
-  return <form onSubmit={handleCreatePirate}>
-    <input type="text"
-           name="name" 
-           placeholder="Pirate Name" />
-    <input type="submit" value="Create Pirate" disabled={isLoading} />
-  </form>;
+  const [newPirate, setNewPirate] = useState<CreatePirateDto>(emptyPirate);
+
+  const handleCreatePirate = async () => {
+    await createPirate(newPirate);
+  };
+
+  return (
+    <form onSubmit={handleCreatePirate}>
+      <input
+        type="text"
+        name="name"
+        placeholder="Pirate Name"
+        value={newPirate.name}
+        onChange={(e) => setNewPirate({ ...newPirate, name: e.target.value })}
+      />
+      <input type="submit" value="Create Pirate" disabled={isLoading} />
+    </form>
+  );
 };
 
 export default CreatePirate;
