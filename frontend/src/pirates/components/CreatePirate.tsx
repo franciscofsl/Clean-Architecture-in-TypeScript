@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, type PropsWithChildren } from "react";
 import useCreatePirate from "../hooks/useCreatePirate";
 import type { CreatePirateDto } from "../pirates.types";
 
-const CreatePirate = () => {
+interface CreatePirateProps{
+  onCreate?: (pirate: CreatePirateDto) => void;
+}
+
+const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
   const { createPirate, isLoading, error } = useCreatePirate();
 
   const emptyPirate: CreatePirateDto = {
@@ -13,6 +17,7 @@ const CreatePirate = () => {
 
   const handleCreatePirate = async () => {
     await createPirate(newPirate);
+    onCreate?.(newPirate);
   };
 
   return (

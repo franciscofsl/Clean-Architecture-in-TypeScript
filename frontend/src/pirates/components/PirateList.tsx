@@ -18,10 +18,14 @@ const PirateList = () => {
     fetchPirates();
   }, []);
 
+  const onPirateCreated = (newPirate: PirateForListDto) => {
+    setPirates((prevPirates) => [...prevPirates, newPirate]);
+  };
+
   return (
     <div>
       <h1>Pirate List</h1>
-      <CreatePirate />
+      <CreatePirate onCreate={onPirateCreated}/>
     
       <table>
         <thead>
