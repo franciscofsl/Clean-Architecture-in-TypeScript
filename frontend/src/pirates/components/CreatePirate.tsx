@@ -17,7 +17,8 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
 
   const handleCreatePirate = async () => {
     await createPirate(newPirate);
-    onCreate?.(newPirate);
+    onCreate?.(newPirate);  
+    setNewPirate(emptyPirate);
   };
 
   return (
