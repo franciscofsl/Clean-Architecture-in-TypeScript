@@ -16,7 +16,7 @@ const CreatePirate = () => {
   };
 
   return (
-    <form onSubmit={handleCreatePirate}>
+    <form action={handleCreatePirate}>
       <input
         type="text"
         name="name"
