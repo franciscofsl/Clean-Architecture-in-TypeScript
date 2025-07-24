@@ -15,14 +15,15 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
 
   const [newPirate, setNewPirate] = useState<CreatePirateDto>(emptyPirate);
 
-  const handleCreatePirate = async () => {
+  const handleCreatePirate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     await createPirate(newPirate);
     onCreate?.(newPirate);  
     setNewPirate(emptyPirate);
   };
 
   return (
-    <form action={handleCreatePirate}>
+    <form onSubmit={handleCreatePirate}>
       <input
         type="text"
         name="name"

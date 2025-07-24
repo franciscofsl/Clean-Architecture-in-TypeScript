@@ -3,6 +3,17 @@ import type { PirateForListDto } from "../pirates.types";
 
 import React, { useEffect, useState } from "react";
 import CreatePirate from "./CreatePirate";
+import {
+  DataGrid,
+  DataGridBody,
+  DataGridCell,
+  DataGridHeaderCell,
+  DataGridHeader,
+  DataGridRow,
+  createTableColumn,
+  TableCellLayout,
+  type TableColumnDefinition,
+} from "@fluentui/react-components";
 const PirateList = () => {
   const { getPirates, loadingState } = useGetPirates();
   const [pirates, setPirates] = useState<PirateForListDto[]>([]);
@@ -22,26 +33,60 @@ const PirateList = () => {
     setPirates((prevPirates) => [...prevPirates, newPirate]);
   };
 
+  const columns: TableColumnDefinition<PirateForListDto>[] = [
+    createTableColumn<PirateForListDto>({
+      columnId: "name",
+
+      renderHeaderCell: () => {
+        return "Name";
+      },
+      renderCell: (item) => {
+        return item.name;
+      },
+    }),
+  ];
+
   return (
-    <div>
+    <>
       <h1>Pirate List</h1>
-      <CreatePirate onCreate={onPirateCreated}/>
-    
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pirates.map((pirate: PirateForListDto) => (
-            <tr key={pirate.name}>
-              <td>{pirate.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+      <CreatePirate onCreate={onPirateCreated} />
+
+      <DataGrid
+        items={pirates}
+        columns={columns}
+        sortable
+        selectionMode="multiselect"
+        getRowId={(item) => item.name}
+        focusMode="composite"
+        style={{ minWidth: "550px" }}
+      >
+        <DataGridHeader>
+          <DataGridRow
+            selectionCell={{
+              checkboxIndicator: { "aria-label": "Select all rows" },
+            }}
+          >
+            {({ renderHeaderCell }) => (
+              <DataGridHeaderCell>{renderHeaderCell()}</DataGridHeaderCell>
+            )}
+          </DataGridRow>
+        </DataGridHeader>
+        <DataGridBody<PirateForListDto>>
+          {({ item, rowId }) => (
+            <DataGridRow<PirateForListDto>
+              key={rowId}
+              selectionCell={{
+                checkboxIndicator: { "aria-label": "Select row" },
+              }}
+            >
+              {({ renderCell }) => (
+                <DataGridCell>{renderCell(item)}</DataGridCell>
+              )}
+            </DataGridRow>
+          )}
+        </DataGridBody>
+      </DataGrid>
+    </>
   );
 };
 
