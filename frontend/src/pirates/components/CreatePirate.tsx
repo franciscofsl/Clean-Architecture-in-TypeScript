@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 
 const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
   const { createPirate, isLoading, error } = useCreatePirate();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const emptyPirate: CreatePirateDto = {
     name: "",
@@ -41,13 +42,15 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
     e.preventDefault();
     await createPirate(newPirate);
     onCreate?.(newPirate);
+    setIsDialogOpen(false);
     setNewPirate(emptyPirate);
-  };
+  }; 
+
   const styles = useStyles();
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={(event, data) => setIsDialogOpen(data.open)}>
       <DialogTrigger>
-        <ToolbarButton>Create</ToolbarButton>
+        <ToolbarButton onClick={() => setIsDialogOpen(true)}>Create</ToolbarButton>
       </DialogTrigger>
       <DialogSurface aria-describedby={undefined}>
         <form onSubmit={handleCreatePirate}>

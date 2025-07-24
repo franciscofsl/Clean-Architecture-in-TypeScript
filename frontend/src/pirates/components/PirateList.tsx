@@ -16,7 +16,6 @@ import {
   Toolbar,
   ToolbarButton,
 } from "@fluentui/react-components";
-import WithForm from "./CreatePirateModal";
 const PirateList = () => {
   const { getPirates, loadingState } = useGetPirates();
   const [pirates, setPirates] = useState<PirateForListDto[]>([]);
