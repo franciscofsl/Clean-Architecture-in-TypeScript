@@ -13,7 +13,10 @@ import {
   createTableColumn,
   TableCellLayout,
   type TableColumnDefinition,
+  Toolbar,
+  ToolbarButton,
 } from "@fluentui/react-components";
+import WithForm from "./CreatePirateModal";
 const PirateList = () => {
   const { getPirates, loadingState } = useGetPirates();
   const [pirates, setPirates] = useState<PirateForListDto[]>([]);
@@ -50,6 +53,11 @@ const PirateList = () => {
     <>
       <h1>Pirate List</h1>
       <CreatePirate onCreate={onPirateCreated} />
+      <div>
+        <Toolbar aria-label="Vertical Button">
+          <ToolbarButton>Create</ToolbarButton>
+        </Toolbar>
+      </div>
 
       <DataGrid
         items={pirates}
