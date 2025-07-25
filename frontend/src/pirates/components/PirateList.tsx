@@ -1,8 +1,7 @@
-import useGetPirates from "../hooks/useGetPirates";
 import type { PirateForListDto } from "../pirates.types";
 
 import { useEffect, useState } from "react";
-import CreatePirate from "./CreatePirate";
+import CreatePirate from "./CreatePirate"; 
 import {
   DataGrid,
   DataGridBody,
@@ -12,19 +11,24 @@ import {
   DataGridRow,
   createTableColumn,
   type TableColumnDefinition,
-  Toolbar
+  Toolbar,
 } from "@fluentui/react-components";
+import useRestGet from "../../generic-components/hooks/rest/useRestGet";
 
 const PirateList = () => {
-  const { getPirates, loadingState } = useGetPirates();
+  // alias to reuse hook
+  const { getRest: getPirates, loadingState } = useRestGet<PirateForListDto[]>({
+    endpoint: "pirates",
+  });
+
   const [pirates, setPirates] = useState<PirateForListDto[]>([]);
 
   useEffect(() => {
     const fetchPirates = async () => {
       const response = await getPirates();
       console.log(response);
-      if (response && response.data) {
-        setPirates(response.data);
+      if (response) {
+        setPirates(response);
       }
     };
     fetchPirates();
