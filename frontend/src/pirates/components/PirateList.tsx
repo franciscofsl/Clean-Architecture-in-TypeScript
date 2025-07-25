@@ -1,7 +1,7 @@
 import useGetPirates from "../hooks/useGetPirates";
 import type { PirateForListDto } from "../pirates.types";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CreatePirate from "./CreatePirate";
 import {
   DataGrid,
@@ -12,12 +12,8 @@ import {
   DataGridRow,
   createTableColumn,
   type TableColumnDefinition,
-  Toolbar,
-  ToolbarButton,
+  Toolbar
 } from "@fluentui/react-components";
-import TypedForm from "../../generic-components/Forms/TypedForm";
-import CreatePirateFormSetup from "./CreatePirateFormSetup";
-import type { CreatePirateDto } from "../pirates.types";
 
 const PirateList = () => {
   const { getPirates, loadingState } = useGetPirates();

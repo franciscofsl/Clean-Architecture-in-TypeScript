@@ -1,4 +1,4 @@
-import { Input, Label, makeStyles } from "@fluentui/react-components";
+import { Input, Label } from "@fluentui/react-components";
 import type FormSetup from "./FormSetup";
 
 interface TypedFormProps<TItemType, TSetupType extends FormSetup<TItemType>> {
