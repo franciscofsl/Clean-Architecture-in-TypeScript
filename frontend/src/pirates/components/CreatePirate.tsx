@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 });
 
 const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
-  const { createPirate, isLoading, error } = useCreatePirate();
+  const { createPirate } = useCreatePirate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const emptyPirate: CreatePirateDto = {
@@ -54,7 +54,7 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
   return (
     <Dialog
       open={isDialogOpen}
-      onOpenChange={(event, data) => setIsDialogOpen(data.open)}
+      onOpenChange={(_event, data) => setIsDialogOpen(data.open)}
     >
       <DialogTrigger>
         <ToolbarButton onClick={() => setIsDialogOpen(true)}>

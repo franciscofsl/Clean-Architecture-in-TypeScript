@@ -1,6 +1,6 @@
 import type FormType from "./FormType";
 
-abstract class FormSetup<TItemType> {
+abstract class FormSetup<_TItemType> {
     private fields: FormField[] = [];
     constructor() { }
 
