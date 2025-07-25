@@ -10,11 +10,11 @@ import {
   DialogBody,
   DialogActions,
   Button,
-  Input,
-  Label,
   makeStyles,
   ToolbarButton,
 } from "@fluentui/react-components";
+import TypedForm from "../../generic-components/Forms/TypedForm";
+import CreatePirateFormSetup from "./CreatePirateFormSetup";
 
 interface CreatePirateProps {
   onCreate?: (pirate: CreatePirateDto) => void;
@@ -38,36 +38,38 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
 
   const [newPirate, setNewPirate] = useState<CreatePirateDto>(emptyPirate);
 
+  const handleFieldChange = (field: keyof CreatePirateDto, value: string) => {
+    setNewPirate((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleCreatePirate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createPirate(newPirate);
     onCreate?.(newPirate);
     setIsDialogOpen(false);
     setNewPirate(emptyPirate);
-  }; 
+  };
 
   const styles = useStyles();
   return (
-    <Dialog open={isDialogOpen} onOpenChange={(event, data) => setIsDialogOpen(data.open)}>
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={(event, data) => setIsDialogOpen(data.open)}
+    >
       <DialogTrigger>
-        <ToolbarButton onClick={() => setIsDialogOpen(true)}>Create</ToolbarButton>
+        <ToolbarButton onClick={() => setIsDialogOpen(true)}>
+          Create
+        </ToolbarButton>
       </DialogTrigger>
       <DialogSurface aria-describedby={undefined}>
         <form onSubmit={handleCreatePirate}>
           <DialogBody>
             <DialogTitle>Create new pirate</DialogTitle>
             <DialogContent className={styles.content}>
-              <Label required htmlFor={"name"}>
-                Name
-              </Label>
-              <Input
-                required
-                type="text"
-                id={"name"}
-                value={newPirate.name}
-                onChange={(e) =>
-                  setNewPirate({ ...newPirate, name: e.target.value })
-                }
+              <TypedForm<CreatePirateDto, CreatePirateFormSetup>
+                setup={new CreatePirateFormSetup()}
+                values={newPirate}
+                onChange={handleFieldChange}
               />
             </DialogContent>
             <DialogActions>

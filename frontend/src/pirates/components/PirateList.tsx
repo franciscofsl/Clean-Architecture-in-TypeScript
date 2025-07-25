@@ -11,11 +11,14 @@ import {
   DataGridHeader,
   DataGridRow,
   createTableColumn,
-  TableCellLayout,
   type TableColumnDefinition,
   Toolbar,
   ToolbarButton,
 } from "@fluentui/react-components";
+import TypedForm from "../../generic-components/Forms/TypedForm";
+import CreatePirateFormSetup from "./CreatePirateFormSetup";
+import type { CreatePirateDto } from "../pirates.types";
+
 const PirateList = () => {
   const { getPirates, loadingState } = useGetPirates();
   const [pirates, setPirates] = useState<PirateForListDto[]>([]);
@@ -51,10 +54,10 @@ const PirateList = () => {
   return (
     <>
       <h1>Pirate List</h1>
-      <CreatePirate onCreate={onPirateCreated} />
+
       <div>
         <Toolbar aria-label="Vertical Button">
-          <ToolbarButton>Create</ToolbarButton>
+          <CreatePirate onCreate={onPirateCreated} />
         </Toolbar>
       </div>
 
