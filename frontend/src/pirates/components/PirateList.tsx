@@ -17,7 +17,7 @@ import useRestGet from "../../generic-components/hooks/rest/useRestGet";
 
 const PirateList = () => {
   // alias to reuse hook
-  const { getRest: getPirates, loadingState } = useRestGet<PirateForListDto[]>({
+  const { getRest: getPirates } = useRestGet<PirateForListDto[]>({
     endpoint: "pirates",
   });
 

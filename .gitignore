@@ -12,6 +12,7 @@ build/
 *.js
 *.js.map
 !jest.config.js
+!eslint.config.js
 
 # testing
 coverage/
