@@ -6,6 +6,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "tsc",
+    "vercel-build": "npm run build",
     "start": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "keywords": [],
