@@ -10,22 +10,22 @@ const recruitPirate = new CreatePirate(pirateRepository);
 const getAllPirates = new GetAllPirates(pirateRepository);
 
 router.get('/pirates', async (req, res) => {
+  const pirates = await getAllPirates.execute();
   try {
-    const pirates = await getAllPirates.execute();
     res.status(200).json(pirates);
   } catch (err: any) {
-    res.status(500).send({ error: err.message });
+    res.status(500).send(pirates);
   }
 });
 
 router.post('/pirates', async (req, res) => {
   const { name } = req.body;
 
-  try {
-    await recruitPirate.execute(name);
-    res.status(201).send({ message: `${name} has been recruited to the crew!` });
-  } catch (err: any) {
-    res.status(400).send({ error: err.message });
+  const result = await recruitPirate.execute(name);
+  if (result.isSuccess) {
+    res.status(201).send( result );
+  } else {
+    res.status(400).send( result );
   }
 });
 

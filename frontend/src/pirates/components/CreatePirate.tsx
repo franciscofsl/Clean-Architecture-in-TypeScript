@@ -1,4 +1,4 @@
-import { useState, type PropsWithChildren } from "react"; 
+import { useState, type PropsWithChildren } from "react";
 import type { CreatePirateDto } from "../pirates.types";
 import {
   Dialog,
@@ -29,7 +29,9 @@ const useStyles = makeStyles({
 });
 
 const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
-  const { postRest: createPirate } = useRestPost({ endpoint: "pirates" });
+  const { postRest: createPirate, result } = useRestPost({
+    endpoint: "pirates",
+  });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const emptyPirate: CreatePirateDto = {
@@ -45,9 +47,11 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
   const handleCreatePirate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await createPirate(newPirate);
-    onCreate?.(newPirate);
-    setIsDialogOpen(false);
-    setNewPirate(emptyPirate);
+    if (result?.isSuccess) {
+      onCreate?.(newPirate);
+      setIsDialogOpen(false);
+      setNewPirate(emptyPirate);
+    }
   };
 
   const styles = useStyles();

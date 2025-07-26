@@ -1,4 +1,5 @@
 import { appConfig } from '../config/AppConfig';
+import { Result } from '../helpers/Result';
 
 export interface ApiResponse<T> {
   data: T;
@@ -18,7 +19,7 @@ export class RestClient {
   private timeout: number;
 
   constructor(defaultHeaders: Record<string, string> = {}) {
-    this.baseURL = appConfig.apiBaseUrl; 
+    this.baseURL = appConfig.apiBaseUrl;
     this.defaultHeaders = {
       'Content-Type': 'application/json',
       ...defaultHeaders,
@@ -50,7 +51,7 @@ export class RestClient {
 
       let responseData: T;
       const contentType = response.headers.get('content-type');
-      
+
       if (contentType && contentType.includes('application/json')) {
         responseData = await response.json();
       } else {
@@ -58,7 +59,12 @@ export class RestClient {
       }
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const result = responseData as Result<T>;
+        return {
+          data: responseData,
+          status: response.status,
+          statusText: result?.error ?? response.statusText,
+        };
       }
 
       return {

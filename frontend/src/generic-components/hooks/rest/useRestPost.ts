@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { apiClient } from "../../../api/RestClient";
+import { Result } from "../../../helpers/Result";
 
 interface UseRestPostProps {
     endpoint: string;
@@ -7,23 +8,26 @@ interface UseRestPostProps {
 
 const useRestPost = ({ endpoint }: UseRestPostProps) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [result, setResult] = useState<Result | null>(null);
 
     const postRest = useCallback(async (data: unknown) => {
         setIsLoading(true);
-        setError(null);
+        setResult(null);
 
         try {
             const response = await apiClient.post(endpoint, data);
-            return response.data;
+            const apiResult = response.data as Result;
+            setResult(apiResult);
         } catch (err) {
-            setError(err instanceof Error ? err.message : "An unexpected error occurred");
+            console.error("Error posting data:", err);
+            const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred";
+            setResult(Result.fail(errorMessage));
         } finally {
             setIsLoading(false);
         }
     }, [endpoint]);
 
-    return { postRest, isLoading, error };
+    return { postRest, isLoading, result };
 };
 
 export default useRestPost;
