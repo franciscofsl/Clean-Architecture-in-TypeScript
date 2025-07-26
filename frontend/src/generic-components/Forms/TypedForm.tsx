@@ -20,7 +20,7 @@ const TypedForm = <TItemType, TSetupType extends FormSetup<TItemType>>({
             {field.name}
           </Label>
           <Input
-            required
+            
             type="text"
             id={field.name}
             value={String(
