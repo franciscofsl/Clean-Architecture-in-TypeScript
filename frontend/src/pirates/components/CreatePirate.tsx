@@ -1,5 +1,4 @@
-import { useState, type PropsWithChildren } from "react";
-import useCreatePirate from "../hooks/useCreatePirate";
+import { useState, type PropsWithChildren } from "react"; 
 import type { CreatePirateDto } from "../pirates.types";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import {
 } from "@fluentui/react-components";
 import TypedForm from "../../generic-components/Forms/TypedForm";
 import CreatePirateFormSetup from "./CreatePirateFormSetup";
+import useRestPost from "../../generic-components/hooks/rest/useRestPost";
 
 interface CreatePirateProps {
   onCreate?: (pirate: CreatePirateDto) => void;
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 });
 
 const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
-  const { createPirate } = useCreatePirate();
+  const { postRest: createPirate } = useRestPost({ endpoint: "pirates" });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const emptyPirate: CreatePirateDto = {
