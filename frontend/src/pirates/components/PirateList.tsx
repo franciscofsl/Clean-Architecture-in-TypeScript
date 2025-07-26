@@ -14,10 +14,11 @@ import {
   Toolbar,
 } from "@fluentui/react-components";
 import useRestGet from "../../generic-components/hooks/rest/useRestGet";
+import type { Result } from "../../helpers/Result";
 
 const PirateList = () => {
   // alias to reuse hook
-  const { getRest: getPirates } = useRestGet<PirateForListDto[]>({
+  const { getRest: getPirates } = useRestGet<Result<PirateForListDto[]>>({
     endpoint: "pirates",
   });
 
@@ -26,9 +27,8 @@ const PirateList = () => {
   useEffect(() => {
     const fetchPirates = async () => {
       const response = await getPirates();
-      console.log(response);
-      if (response) {
-        setPirates(response);
+      if (response.isSuccess) {
+        setPirates(response.value ?? []);
       }
     };
     fetchPirates();
