@@ -11,6 +11,8 @@ import {
   Button,
   makeStyles,
   ToolbarButton,
+  MessageBar,
+  MessageBarBody,
 } from "@fluentui/react-components";
 import TypedForm from "../../generic-components/Forms/TypedForm";
 import CreatePirateFormSetup from "./CreatePirateFormSetup";
@@ -33,6 +35,7 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
     endpoint: "pirates",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const emptyPirate: CreatePirateDto = {
     name: "",
@@ -51,6 +54,10 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
       onCreate?.(newPirate);
       setIsDialogOpen(false);
       setNewPirate(emptyPirate);
+    } else if (result?.isFailure()) {
+      const errorMsg = result.error || "Error al crear el pirata";
+      console.error("Error creating pirate:", errorMsg);
+      setErrorMessage(errorMsg);
     }
   };
 
@@ -70,6 +77,11 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
           <DialogBody>
             <DialogTitle>Create new pirate</DialogTitle>
             <DialogContent className={styles.content}>
+              {errorMessage && (
+                <MessageBar intent="error">
+                  <MessageBarBody>{errorMessage}</MessageBarBody>
+                </MessageBar>
+              )}
               <TypedForm<CreatePirateDto, CreatePirateFormSetup>
                 setup={new CreatePirateFormSetup()}
                 values={newPirate}

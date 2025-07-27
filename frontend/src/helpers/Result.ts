@@ -21,12 +21,12 @@ export class Result<T = void> {
         return new Result<U>(false, error);
     }
 
-    get isFailure(): boolean {
+    isFailure(): boolean {
         return !this.isSuccess;
     }
 
     getValue(): T {
-        if (this.isFailure) {
+        if (this.isFailure()) {
             throw new Error(`Cannot get value from failed result: ${this.error}`);
         }
         return this.value as T;
