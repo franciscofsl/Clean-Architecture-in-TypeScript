@@ -10,7 +10,7 @@ const useRestPost = ({ endpoint }: UseRestPostProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<Result<unknown> | null>(null);
 
-    const postRest = useCallback(async (data: unknown) => {
+    const postRest = useCallback(async (data: unknown): Promise<Result<unknown>> => {
         setIsLoading(true);
         setResult(null);
 
@@ -19,15 +19,22 @@ const useRestPost = ({ endpoint }: UseRestPostProps) => {
             const apiResult = response.data as { isSuccess: boolean; error?: string; value?: unknown };
 
             // Convert the plain object to a Result instance
+            let result: Result<unknown>;
             if (apiResult.isSuccess) {
-                setResult(Result.ok(apiResult.value));
+                result = Result.ok(apiResult.value);
+                setResult(result);
+                return result;
             } else {
-                setResult(Result.fail(apiResult.error || "An error occurred"));
+                result = Result.fail(apiResult.error || "An error occurred");
+                setResult(result);
+                return result;
             }
         } catch (err) {
             console.error("Error posting data:", err);
             const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred";
-            setResult(Result.fail(errorMessage));
+            const result = Result.fail(errorMessage);
+            setResult(result);
+            return result;
         } finally {
             setIsLoading(false);
         }

@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
-  const { postRest: createPirate, result } = useRestPost({
+  const { postRest: createPirate } = useRestPost({
     endpoint: "pirates",
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -49,12 +49,14 @@ const CreatePirate = ({ onCreate }: PropsWithChildren<CreatePirateProps>) => {
 
   const handleCreatePirate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await createPirate(newPirate);
-    if (result?.isSuccess) {
+    setErrorMessage(null); // Clear any previous error message
+
+    const result = await createPirate(newPirate);
+    if (result.isSuccess) {
       onCreate?.(newPirate);
       setIsDialogOpen(false);
       setNewPirate(emptyPirate);
-    } else if (result?.isFailure()) {
+    } else if (result.isFailure()) {
       const errorMsg = result.error || "Error al crear el pirata";
       console.error("Error creating pirate:", errorMsg);
       setErrorMessage(errorMsg);
